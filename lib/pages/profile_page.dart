@@ -155,50 +155,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Wishlist',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index; // Update the current index
-          });
-          switch (index) {
-            case 0:
-              Navigator.pushNamed(context, '/home'); // Navigate to Home
-              break;
-            case 1:
-              Navigator.pushNamed(context, '/cart'); // Navigate to Cart
-              break;
-            case 2:
-              Navigator.pushNamed(context, '/wishlist'); // Navigate to Wishlist
-              break;
-            case 3:
-              Navigator.pushNamed(context, '/profile'); // Navigate to Profile
-              break;
-          }
-        },
-        selectedItemColor: isDarkMode ? Colors.white : Colors.black,
-        unselectedItemColor: isDarkMode ? Colors.white70 : Colors.grey,
-        type: BottomNavigationBarType.fixed,
-      ),
     );
   }
 }
