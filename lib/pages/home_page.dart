@@ -8,13 +8,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   bool isDarkMode = false;
-  int _selectedIndex = 0;
+  int currentIndex = 0; // Added for bottom navigation index
+
   late AnimationController _controller;
   late Animation<Offset> _slideInAnimation;
   late PageController _pageController; // Added for PageView control
   late Timer _timer; // Added for automatic sliding
   int _currentPage = 0; // Track current page
-  int currentIndex = 0; // Added for bottom navigation index
 
   final List<String> newArrivalsImages = [
     'images/Louis-Vuitton-Monogram-Neverfull-Pouch-World-Tour-Collection.jpg',
@@ -48,7 +48,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       } else {
         _currentPage = 0;
       }
-      _pageController.animateToPage(_currentPage, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
@@ -66,11 +70,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return Scaffold(
-      backgroundColor: backgroundColor, // Set the background color
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'Home Page',
-          style: TextStyle(color: textColor), // Set the title color based on dark mode
+          style: TextStyle(color: textColor),
         ),
         backgroundColor: backgroundColor,
         elevation: 0,
@@ -99,11 +103,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 children: [
                   CircleAvatar(
                     backgroundColor: isDarkMode ? Colors.grey[700] : Colors.black,
-                    child: const Icon(Icons.home, color: Colors.white), // Changed icon to home
+                    child: const Icon(Icons.home, color: Colors.white),
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    'Home Page', // Updated header text
+                    'Home Page',
                     style: TextStyle(
                       color: isDarkMode ? Colors.white : Colors.black,
                       fontSize: 24,
@@ -117,8 +121,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               leading: const Icon(Icons.home),
               title: Text('Home', style: TextStyle(color: isDarkMode ? Colors.white : Colors.black)),
               onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.pushReplacementNamed(context, '/home'); // Navigate to HomePage
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/home');
               },
             ),
             ListTile(
@@ -171,10 +175,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     },
                     child: Container(
                       margin: const EdgeInsets.all(16.0),
-                      height: orientation == Orientation.portrait ? 200 : 300, // Bigger in landscape
+                      height: orientation == Orientation.portrait ? 200 : 300,
                       decoration: BoxDecoration(
                         image: const DecorationImage(
-                          image: AssetImage('images/Home Banner.png'), // Updated path
+                          image: AssetImage('images/Home Banner.png'),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -219,17 +223,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/products'); // Navigate to products page
+                      Navigator.pushNamed(context, '/products');
                     },
                     child: const Text(
                       'Shop Now',
-                      style: TextStyle(fontSize: 16), // Set font size for the text
+                      style: TextStyle(fontSize: 16),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isDarkMode ? Colors.white : Colors.black, // Change background color based on dark mode
+                      backgroundColor: isDarkMode ? Colors.white : Colors.black,
                       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ).copyWith(
-                      // Update text color based on dark mode
                       foregroundColor: MaterialStateProperty.all(isDarkMode ? Colors.black : Colors.white),
                     ),
                   ),
@@ -237,9 +240,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
                 const SizedBox(height: 20),
 
-                // New Arrivals Section
+                // New Arrivals Carousel
                 SizedBox(
-                  height: 180, // Set a fixed height for the carousel
+                  height: 180,
                   child: PageView.builder(
                     controller: _pageController,
                     itemCount: newArrivalsImages.length,
@@ -248,21 +251,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         onTap: () {
                           // Navigate to product details
                         },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8), // Space between images
-                          decoration: BoxDecoration(
+                        child: Card(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              image: AssetImage(newArrivalsImages[index]),
+                          ),
+                          elevation: 4,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.asset(
+                              newArrivalsImages[index],
                               fit: BoxFit.cover,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
                           ),
                         ),
                       );

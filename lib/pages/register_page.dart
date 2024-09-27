@@ -12,6 +12,8 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
   late AnimationController _controller;
   late Animation<double> _fadeInAnimation;
 
+  String? selectedUserType; // Variable for dropdown selection
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +37,6 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    // Using MediaQuery to determine screen height and wrap content in SingleChildScrollView
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -50,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 80), // Top spacing
+                  const SizedBox(height: 80),
                   _buildRegisterHeader(),
                   const SizedBox(height: 40),
                   Form(
@@ -60,6 +61,8 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                         _buildNameField(),
                         const SizedBox(height: 20),
                         _buildEmailField(),
+                        const SizedBox(height: 20),
+                        _buildUserTypeField(), // New dropdown field
                         const SizedBox(height: 20),
                         _buildPasswordField(),
                         const SizedBox(height: 30),
@@ -150,6 +153,44 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
       validator: (value) {
         if (value == null || value.isEmpty || !value.contains('@')) {
           return 'Please enter a valid email';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildUserTypeField() {
+    return DropdownButtonFormField<String>(
+      value: selectedUserType,
+      hint: Text(
+        'Select User Type',
+        style: const TextStyle(color: Colors.white54, fontFamily: 'Montserrat'),
+      ),
+      style: const TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
+      dropdownColor: Colors.black,
+      items: [
+        DropdownMenuItem(value: 'Customer', child: Text('Customer')),
+        DropdownMenuItem(value: 'Admin', child: Text('Admin')),
+        DropdownMenuItem(value: 'Vendor', child: Text('Vendor')),
+      ],
+      onChanged: (value) {
+        setState(() {
+          selectedUserType = value;
+        });
+      },
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white54),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+      validator: (value) {
+        if (value == null) {
+          return 'Please select a user type';
         }
         return null;
       },
